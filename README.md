@@ -37,7 +37,7 @@ docker run -d -p 5000:5000 --name docker-registry --restart=always \
 
 ここでは、カレントディレクトリに`docker-registry`の`/var/lib/docker-registry`用のディレクトリを作成して、Ubuntuの`docker-registry`で使用されている`uid=105`と`gid=106`にしています。場合によっては、別のファイルシステムを使用するのが良いかも知れません。
 
-また`--restart=always`としていますから、一度コンテナを起動すればUbuntuを再起動しても自動的に起動される用になります。
+また`--restart=always`としていますから、一度コンテナを起動すればUbuntuを再起動しても自動的に起動されるようになります。
 
 現在は、TLSを使用していないため外部からアクセスできる環境では、5000/tcpから誰でも操作できる点に留意してください。
 
@@ -59,19 +59,16 @@ Ubuntuにある`docker-registry`は、API V2となっていますので、APIド
 
 [Docker Registry HTTP API V2](https://github.com/docker/distribution/blob/master/docs/spec/api.md)
 
-
-## Ubuntu の Dockerパッケージ
-
-Ubuntu 16.04 LTSでは、以下のDockerパッケージを利用することができます。
+API V2を使用してリポジトリに登録されているイメージのリストを入手するには、次のように実行します。
 
 ``` bash
-# apt-cache search docker
-docker - System tray for KDE3/GNOME2 docklet applications
-docker-compose - Punctual, lightweight development environments using Docker
-docker-registry - Docker toolset to pack, ship, store, and deliver content
-docker.io - Linux container runtime
-docker-doc - Linux container runtime -- documentation
-docker-engine - Docker: the open-source application container engine
+curl -s http://localhost:5000/v2/_catalog
+```
+
+このイメージのタグを調べることもできます。
+
+``` bash
+curl -s http://localhost:5000/v2/<image name>/tags/list
 ```
 
 # Author
